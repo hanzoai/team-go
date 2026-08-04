@@ -255,15 +255,31 @@ protocol constants — that is interface usage to stay wire-compatible, not a
 derivative of the bundle, and they remain MIT OR Apache-2.0.
 
 **Why we did not regenerate it as original work.** That was the preferred fix and
-it is not reachable from here. `hanzoai/doctype` and `hanzoai/framework` are
-clean, wholly Hanzo-authored Apache-2.0 engines, but they implement the *Frappe*
-DocType paradigm — metadata-driven schema — not Huly's `Tx[]` class-graph format,
-and neither emits a model bundle. There is no generator in this repo either;
-`model.json` is a committed `//go:embed` artifact. Producing an owned equivalent
-means re-authoring Huly's whole product model *and* moving the transactor and
-`@hanzogui/team` off Huly's protocol: a replacement project, not a regeneration.
-Hand-stripping Huly identifiers out of the JSON would be laundering, not
-authorship, and is not an option.
+it is not reachable from here — the generator that produces this artifact is
+itself EPL-2.0 Huly code.
+
+It lives on the `chore/drop-stale-team-ingress` branch, not on `main`:
+`models/all/src/build.ts` is `writeFileSync(argv[2], JSON.stringify(builder().getTxes()))`
+— exactly the `Tx[]` shape of `model.json` — driven by
+`foundations/core/packages/model/src/dsl.ts` (`export class Builder`), whose
+`package.json` reads `"name": "@hanzoteam/model"`, `"version": "0.7.17"`,
+`"license": "EPL-2.0"`, `"author": "Anticrm Platform Contributors"`.
+`@hanzoteam/*` is a rename of `@hcengineering/*`. Its input is Huly's own model
+tree (~95 `@hanzoteam/model-*` packages; `@Model(` 354, `@Prop(` 753,
+`createModel` 279, `.mixin(` 788). Running that compiler yields EPL-2.0 output
+from EPL-2.0 input — it launders nothing.
+
+`hanzoai/doctype` and `hanzoai/framework` cannot substitute. They are clean,
+wholly Hanzo-authored Apache-2.0 engines, but they implement the *Frappe* DocType
+paradigm — metadata-driven schema — with no Tx concept, no class graph, no
+mixins, and no artifact emitter. There is no generator on `main` either;
+`model.json` is a committed `//go:embed` artifact.
+
+So an owned equivalent means authoring both a schema that does not exist *and* a
+new compiler, then moving the transactor and `@hanzogui/team` off Huly's
+protocol: a replacement project, not a regeneration. Hand-stripping Huly
+identifiers out of the JSON would be laundering, not authorship, and is not an
+option.
 
 **Still open (deliberately out of scope here):**
 - The repo is private. EPL obligations attach on distribution, so this was latent,
@@ -272,9 +288,10 @@ authorship, and is not an option.
 - Branch `chore/drop-stale-team-ingress` carries a 10,643-file Huly TypeScript
   tree under an EPL-2.0 `LICENSE`, with upstream copyright lines replaced by Hanzo
   in bulk: of 4,323 files carrying a copyright line, 4,127 now name Hanzo and only
-  353 still name Anticrm Platform Contributors or Hardcore Engineering Inc.
-  Retaining a licence while deleting the author's copyright line is its own
-  defect. That branch should be dropped or moved to `hanzoai/team-v1`, where the
-  same code is already correctly labelled.
+  353 still name Anticrm Platform Contributors or Hardcore Engineering Inc. —
+  while the package manifests under it still declare `"license": "EPL-2.0"` and
+  `"author": "Anticrm Platform Contributors"`. Retaining a licence while deleting
+  the author's copyright line is its own defect. That branch should be dropped or
+  moved to `hanzoai/team-v1`, where the same code is already correctly labelled.
 - Branch `chore/license-attribution` recorded this conflict but left it unresolved
   and read §3.1 as whole-work copyleft. This branch supersedes it; close it.
