@@ -1,6 +1,7 @@
 {
   "name": "team-go-e2e",
   "private": true,
+  "license": "MIT OR Apache-2.0",
   "description": "Functional visual Playwright e2e for the hanzo.team backend (team-go) + front.",
   "scripts": {
     "test": "playwright test",

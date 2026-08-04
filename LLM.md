@@ -212,3 +212,69 @@ Slack redirect URL), `SLACK_AGENT_CONCURRENCY`; reuses `IAM_CLIENT_ID/SECRET`,
 `signSubjectState` primitive underpins the org OAuth state, the (team,user) link
 state, and the link cookie; ONE `agentReply` brain serves the mention/DM and
 slash paths (returning a linkPrompt flag so each caller delivers it ephemerally).
+
+## Licensing — the declared split (why this repo is not one licence)
+
+`LICENSE` used to say BSD-3-Clause over the whole tree. That was wrong, and it
+was our own error, not something inherited: `pkg/transactor/model.json` landed in
+`1dd49ae3` at **2026-06-20 23:27:15 -0700**, and `LICENSE` was added by
+`3925acd6` at **2026-06-21 02:19:57 -0700** — under three hours later, with the
+message "add LICENSE (OSS compliance; was unlicensed)". We chose BSD-3-Clause
+and applied it over a file we do not own.
+
+`pkg/transactor/model.json` (1,949,288 bytes, sha256 `459a174a…d105b4`) is Huly
+Platform's compiled model — the same artifact Huly's transactor loads as
+`models/all/bundle/model.json`, as `model.go`'s own comment says. It carries
+Huly's class graph and identifier namespace: `core:class:Doc` x235,
+`tracker:class:Issue` x247, `recruit:class:Vacancy` x97, `contact:class:Person`
+x78, plus the `activity:`/`hr:`/`lead:`/`board:` plugin classes. Huly is
+**EPL-2.0**. `dab16f69` ("purge: zero huly strings") renamed the branded strings
+inside the bundle — a grep for `huly` now returns nothing — but renaming strings
+changes neither authorship nor licence.
+
+**EPL-2.0 is file-level (weak) copyleft, not viral.** §3.1 obliges an
+EPL-licensed *file* to stay EPL when distributed in source form; the licence
+explicitly contemplates combination with separately-licensed modules. So the fix
+is a declared split, not a whole-repo relicense — relicensing everything to
+EPL-2.0 would over-correct and give away Hanzo's own code.
+
+Landed layout:
+
+```
+LICENSE          MIT OR Apache-2.0 + the model.json carve-out, canonical MIT text
+LICENSE-MIT      canonical MIT
+LICENSE-APACHE   canonical Apache-2.0, byte-identical to apache.org
+LICENSE-EPL      canonical EPL-2.0, byte-identical to eclipse.org
+NOTICE           attribution + the exact EPL-governed path list
+```
+
+Scope is exactly one file. `model.json` is the only Huly-derived artifact on
+`main`; the 105-file tree is otherwise Hanzo's own (76 Go, plus e2e/, functions/,
+migrations/). Five Go files under `pkg/transactor/` name Huly identifiers as
+protocol constants — that is interface usage to stay wire-compatible, not a
+derivative of the bundle, and they remain MIT OR Apache-2.0.
+
+**Why we did not regenerate it as original work.** That was the preferred fix and
+it is not reachable from here. `hanzoai/doctype` and `hanzoai/framework` are
+clean, wholly Hanzo-authored Apache-2.0 engines, but they implement the *Frappe*
+DocType paradigm — metadata-driven schema — not Huly's `Tx[]` class-graph format,
+and neither emits a model bundle. There is no generator in this repo either;
+`model.json` is a committed `//go:embed` artifact. Producing an owned equivalent
+means re-authoring Huly's whole product model *and* moving the transactor and
+`@hanzogui/team` off Huly's protocol: a replacement project, not a regeneration.
+Hand-stripping Huly identifiers out of the JSON would be laundering, not
+authorship, and is not an option.
+
+**Still open (deliberately out of scope here):**
+- The repo is private. EPL obligations attach on distribution, so this was latent,
+  never live — but the split must be in place before anything ships externally,
+  including any binary embedding `model.json`.
+- Branch `chore/drop-stale-team-ingress` carries a 10,643-file Huly TypeScript
+  tree under an EPL-2.0 `LICENSE`, with upstream copyright lines replaced by Hanzo
+  in bulk: of 4,323 files carrying a copyright line, 4,127 now name Hanzo and only
+  353 still name Anticrm Platform Contributors or Hardcore Engineering Inc.
+  Retaining a licence while deleting the author's copyright line is its own
+  defect. That branch should be dropped or moved to `hanzoai/team-v1`, where the
+  same code is already correctly labelled.
+- Branch `chore/license-attribution` recorded this conflict but left it unresolved
+  and read §3.1 as whole-work copyleft. This branch supersedes it; close it.

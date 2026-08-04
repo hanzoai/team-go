@@ -168,3 +168,9 @@ microservice fan-out.
 ├── .env.example
 └── README.md
 ```
+
+## License
+
+MIT OR Apache-2.0, except `pkg/transactor/model.json` — a compiled artifact of
+[Huly Platform](https://github.com/hcengineering/platform) — which stays under
+EPL-2.0; see [NOTICE](NOTICE).
