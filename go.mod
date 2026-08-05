@@ -1,4 +1,4 @@
-module github.com/hanzoai/team-go
+module github.com/hanzoai/team
 
 go 1.26.5
 
@@ -7,7 +7,6 @@ require (
 	github.com/hanzoai/base v1.5.11
 	github.com/hanzoai/dbx v1.17.2
 	github.com/hanzoai/sqlite v0.4.0
-	github.com/hanzoai/team v0.4.8
 	github.com/luxfi/metric v1.8.1
 	golang.org/x/net v0.56.0
 )
