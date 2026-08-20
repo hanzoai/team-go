@@ -19,12 +19,13 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      # dbx is the one private module; GH_PAT (the canonical CI bot cred) reads it.
-      - name: Configure private module access
+      # Every module in this graph is served by the public proxy and verified
+      # against sum.golang.org. GH_PAT (the canonical CI bot cred) authenticates
+      # any github.com fetch that still happens, so it is not rate limited.
+      - name: Authenticate github.com fetches
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          go env -w GOPRIVATE=github.com/hanzoai/dbx
           git config --global url."https://x-access-token:${GH_PAT}@github.com/".insteadOf "https://github.com/"
       # Prod is pure-Go (CGO_ENABLED=0, modernc sqlite) — keep the build honest.
       - run: CGO_ENABLED=0 go build ./...
