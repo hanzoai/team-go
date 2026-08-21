@@ -423,6 +423,23 @@ func (g *api) account(re *core.RequestEvent) (account, org, tok string, err erro
 	if tok == "" {
 		return "", "", "", fmt.Errorf("no token")
 	}
+	// An IAM-issued token is RS-signed and was already verified upstream: Base's
+	// platform plugin checks it against the IAM JWKS, stashes the raw sub, and
+	// normalizes the tenant. Reading that answer is the only way this service
+	// learns an IAM identity — it holds no key that could check one itself, and
+	// decoding an RS token with the HS256 secret is not a check, it is a parse.
+	//
+	// A token that SAYS RS and arrives unverified is refused rather than retried
+	// on the HS256 path: the two are different authorities, and falling between
+	// them is how an unverified token gets treated as a session.
+	if alg, e := token.Alg(tok); e == nil && strings.HasPrefix(alg, "RS") {
+		id := wsauth.CallerUID(re)
+		if id == "" {
+			return "", "", "", fmt.Errorf("iam token was not verified")
+		}
+		return id, wsauth.CallerOrg(re), tok, nil
+	}
+
 	t, err := token.Decode(tok, g.cfg.serverSecret, true)
 	if err != nil {
 		return "", "", "", err
