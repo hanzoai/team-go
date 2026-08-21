@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"sync"
 
-	_ "github.com/hanzoai/sqlite"
+	"github.com/hanzoai/sqlite"
 )
 
 // store keeps ONE SQLite database per (org, workspace) — the data plane is
@@ -52,7 +52,7 @@ func (s *store) db(org, workspace string) (*sql.DB, error) {
 	}
 	journal := env("SQLITE_JOURNAL_MODE", "WAL") // DELETE/TRUNCATE on FUSE/S3 mounts
 	path := filepath.Join(dir, seg(workspace)+".db")
-	db, err := sql.Open("sqlite", path+"?_pragma=busy_timeout(5000)&_pragma=journal_mode("+journal+")&_pragma=foreign_keys(0)")
+	db, err := sql.Open("sqlite", dsn(path, journal))
 	if err != nil {
 		return nil, err
 	}
@@ -178,4 +178,18 @@ func (s *store) count(org, workspace string) (int, error) {
 		return 0, err
 	}
 	return n, nil
+}
+
+// dsn addresses path with this store's profile. The driver builds it: the two
+// backends spell a pragma differently in a DSN and each ignores the other's
+// spelling silently, so a hand-written profile applies on one build and
+// evaporates on the other.
+//
+// Foreign keys stay OFF — docs is a single table with no references.
+func dsn(path, journal string) string {
+	return sqlite.PragmaDSN(path, []sqlite.Pragma{
+		{Name: "busy_timeout", Value: "5000"},
+		{Name: "journal_mode", Value: journal},
+		{Name: "foreign_keys", Value: "0"},
+	})
 }
