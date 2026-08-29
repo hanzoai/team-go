@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/hanzoai/base/core"
-	"github.com/hanzoai/team/pkg/model"
+	"github.com/hanzoai/team-go/pkg/model"
 )
 
 // TestWorkspaceInfoVersionTracksModel is the no-drift guard on the account

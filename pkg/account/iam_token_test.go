@@ -13,8 +13,8 @@ import (
 
 	"github.com/hanzoai/base/core"
 	"github.com/hanzoai/base/tools/router"
-	"github.com/hanzoai/team/pkg/token"
-	"github.com/hanzoai/team/pkg/wsauth"
+	"github.com/hanzoai/team-go/pkg/token"
+	"github.com/hanzoai/team-go/pkg/wsauth"
 )
 
 // rsToken is a token that SAYS RS256 in its header. Nothing here signs it,

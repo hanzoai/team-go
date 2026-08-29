@@ -1,4 +1,4 @@
-module github.com/hanzoai/team
+module github.com/hanzoai/team-go
 
 go 1.26.5
 
