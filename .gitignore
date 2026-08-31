@@ -1,0 +1,35 @@
+/team
+/team.exe
+*.test
+hz_data/
+hz_hooks/
+.env
+.env.local
+node_modules/
+functions/dist/
+dist/
+*.log
+.DS_Store
+coverage.out
+coverage.html
+
+# What a working copy keeps from the upstream this service was derived from.
+# This repo IS cmd/, functions/ and e2e/ - a Go service, 105 files. No file in
+# any directory below is tracked on any branch, and together they are several
+# gigabytes, so every status without this block is unreadable.
+/common/
+/desktop/
+/desktop-package/
+/dev/
+/foundations/
+/models/
+/packages/
+/plugins/
+/pods/
+/qms-desktop-package/
+/qms-tests/
+/server/
+/server-plugins/
+/services/
+/tests/
+/ws-tests/
