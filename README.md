@@ -1,15 +1,14 @@
 <p align="center"><img src=".github/hero.svg" alt="team" width="880"></p>
 
-# hanzo-team
+# Hanzo Team
 
 > **The standalone binary is retired, this module is not.** hanzo.team is served
 > in-process by the unified cloud binary —
-> [`hanzoai/cloud`](https://github.com/hanzoai/cloud) `apps/team`, which today
-> carries a **verbatim port** of these packages rather than importing them:
-> `cloud/go.mod` requires no `github.com/hanzoai/team`, and ~16 files there open
-> with "ported VERBATIM from github.com/hanzoai/team/pkg/...". So a fix made
-> here does not reach production until it is copied across. Two trees, one
-> behaviour, by hand — say so plainly until the import seam is real.
+> [`hanzoai/cloud`](https://github.com/hanzoai/cloud) `apps/team`, which carries
+> its own copy of these packages rather than importing them: `cloud/go.mod`
+> requires no `github.com/hanzoai/team`. So a fix made here does not reach
+> production until it is copied across. Two trees, one behaviour, by hand — say
+> so plainly until the import seam is real.
 >
 > - backend module — this repo, `github.com/hanzoai/team`
 > - live process — `hanzoai/cloud` `apps/team`
