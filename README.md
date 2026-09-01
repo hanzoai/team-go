@@ -15,11 +15,9 @@
 > - live process — `hanzoai/cloud` `apps/team`
 > - frontend — [`hanzoai/gui`](https://github.com/hanzoai/gui) `apps/team`
 >   (`@hanzogui/team`: web, iOS, Android, desktop)
-> - the Huly-derived TypeScript lineage this replaced —
->   [`hanzoai/team-v1`](https://github.com/hanzoai/team-v1)
 
 Single-binary Go backend for `hanzo.team`. Replaces the 40+
-TypeScript/Node microservices the upstream fork shipped. The Svelte frontend it
+TypeScript/Node microservices the previous implementation shipped. The Svelte frontend it
 was originally built against now lives on in `hanzoai/team-v1`; current clients
 are served by `@hanzogui/team`.
 
@@ -174,6 +172,9 @@ microservice fan-out.
 
 ## License
 
-MIT OR Apache-2.0, except `pkg/transactor/model.json` — a compiled artifact of
-[Huly Platform](https://github.com/hcengineering/platform) — which stays under
-EPL-2.0; see [NOTICE](NOTICE).
+MIT OR Apache-2.0. See [NOTICE](NOTICE) for the third-party dependencies and
+their licences.
+
+The platform model this transactor serves is not shipped here and is not
+compiled in: it is read from `model.json` in the data directory at start, so a
+deployment supplies its own. See `pkg/transactor/model.go`.

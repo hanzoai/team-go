@@ -36,14 +36,21 @@ type server struct {
 	hier   *hierarchy
 	hub    *hub
 	secret string
+	// model is the platform model served to clients, read from the data dir at
+	// Register. Empty when the deployment supplies none — see model.go.
+	model     []byte
+	modelHash string
 }
 
 // Register binds the ZAP transactor WebSocket on app.
 func Register(app core.App) {
+	model := loadModel(app.DataDir())
 	srv := &server{
 		app:    app,
 		store:  newStore(filepath.Join(app.DataDir(), "team_workspaces")),
-		hier:   buildHierarchy(modelJSON),
+		hier:   buildHierarchy(model),
+		model:  model,
+		modelHash: hashModel(model),
 		hub:    newHub(),
 		secret: env("SERVER_SECRET", token.DefaultSecret),
 	}
@@ -302,7 +309,7 @@ func (s *session) hello(id int64) []byte {
 		"binary":         false,
 		"useCompression": false,
 		"serverVersion":  model.Version(),
-		"lastHash":       modelHash,
+		"lastHash":       s.server.modelHash,
 		"reconnect":      false,
 		"account":        s.accountObj(),
 	})
@@ -315,8 +322,8 @@ func (s *session) loadModel(id int64) []byte {
 		"id": id,
 		"result": map[string]any{
 			"full":         true,
-			"hash":         modelHash,
-			"transactions": json.RawMessage(modelJSON),
+			"hash":         s.server.modelHash,
+			"transactions": json.RawMessage(s.server.model),
 		},
 	})
 }

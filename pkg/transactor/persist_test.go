@@ -10,9 +10,9 @@ import (
 func newTestSession(t *testing.T) *session {
 	t.Helper()
 	return &session{
-		server:    &server{hub: newHub()},
+		server:    &server{hub: newHub(), model: testModel, modelHash: hashModel(testModel)},
 		store:     newStore(t.TempDir()),
-		hier:      buildHierarchy(modelJSON),
+		hier:      buildHierarchy(testModel),
 		org:       "test-org",
 		workspace: "ws-test",
 		account:   "acc-test",
@@ -122,7 +122,7 @@ func TestSeedSpaces(t *testing.T) {
 // other's data — the whole point of per-(org,workspace) SQLite files.
 func TestTenantIsolation(t *testing.T) {
 	st := newStore(t.TempDir())
-	hier := buildHierarchy(modelJSON)
+	hier := buildHierarchy(testModel)
 	mk := func(org string) *session {
 		return &session{server: &server{hub: newHub()}, store: st, hier: hier, org: org, workspace: "shared-ws", account: "u"}
 	}

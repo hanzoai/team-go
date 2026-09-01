@@ -11,9 +11,9 @@ import (
 func testSession() *session {
 	dir, _ := os.MkdirTemp("", "team-test")
 	return &session{
-		server:    &server{hub: newHub()},
+		server:    &server{hub: newHub(), model: testModel, modelHash: hashModel(testModel)},
 		store:     newStore(dir),
-		hier:      buildHierarchy(modelJSON),
+		hier:      buildHierarchy(testModel),
 		account:   "2d4d67ab-30f1-474e-b81f-f60461852259",
 		workspace: "e48f81fd-12be-4bcd-aecb-3eaa9a9b5b18",
 	}
@@ -37,7 +37,7 @@ func TestHelloNegotiatesJSON(t *testing.T) {
 	if r["useCompression"] != false {
 		t.Fatalf("useCompression = %v", r["useCompression"])
 	}
-	if r["lastHash"] != modelHash {
+	if r["lastHash"] != hashModel(testModel) {
 		t.Fatalf("lastHash = %v", r["lastHash"])
 	}
 	acc, ok := r["account"].(map[string]any)
@@ -84,14 +84,14 @@ func TestLoadModelServesFullModel(t *testing.T) {
 	// Assert against the embedded bundle's own element count so a model-bundle
 	// refresh (e.g. a new plugin/mixin) can never silently drift this test.
 	var embedded []json.RawMessage
-	if err := json.Unmarshal(modelJSON, &embedded); err != nil {
+	if err := json.Unmarshal(testModel, &embedded); err != nil {
 		t.Fatalf("embedded model.json is not a Tx array: %v", err)
 	}
 	if len(r.Result.Transactions) != len(embedded) {
 		t.Fatalf("transactions = %d, want %d (full embedded model)",
 			len(r.Result.Transactions), len(embedded))
 	}
-	if r.Result.Hash != modelHash {
+	if r.Result.Hash != hashModel(testModel) {
 		t.Fatalf("hash mismatch")
 	}
 }

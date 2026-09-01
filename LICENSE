@@ -8,13 +8,6 @@ at your option.
 
 SPDX-License-Identifier: MIT OR Apache-2.0
 
-EXCEPTION — third-party code under a different licence:
-
-  pkg/transactor/model.json is a compiled artifact of Huly Platform and is
-  governed by the Eclipse Public License 2.0 (LICENSE-EPL), NOT by the terms
-  above. EPL-2.0 obligations attach to that file when it is distributed in
-  source form. See NOTICE for attribution and detail.
-
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this work by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.

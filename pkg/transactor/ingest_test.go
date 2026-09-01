@@ -15,7 +15,7 @@ func ingestServer(t *testing.T, org, ws string) (*server, *session) {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { os.RemoveAll(dir) })
-	srv := &server{hub: newHub(), store: newStore(dir), hier: buildHierarchy(modelJSON)}
+	srv := &server{hub: newHub(), store: newStore(dir), hier: buildHierarchy(testModel), model: testModel, modelHash: hashModel(testModel)}
 	live = srv
 	t.Cleanup(func() { live = nil })
 	sess := &session{server: srv, store: srv.store, hier: srv.hier, org: org, workspace: ws, account: acctSystem}

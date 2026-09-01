@@ -1,40 +1,8 @@
 Hanzo Team
 Copyright (c) 2026 Hanzo AI, Inc.
 
-This product is licensed MIT OR Apache-2.0, EXCEPT for the third-party files
-listed below, which remain under their own licence. See LICENSE.
-
-================================================================================
-Huly Platform — Eclipse Public License 2.0
-================================================================================
-
-The following path is a compiled artifact of Huly Platform
-(https://github.com/hcengineering/platform) and is governed by the Eclipse
-Public License 2.0, the full text of which is in LICENSE-EPL:
-
-    pkg/transactor/model.json
-
-    Copyright (c) 2020, 2021 Anticrm Platform Contributors.
-    Copyright (c) 2021-2026 Hardcore Engineering Inc.
-
-It is Huly's compiled platform model — a JSON array of TxCreateDoc/TxMixin
-transactions defining Huly's class graph, mixins and plugin namespace. It is
-the same artifact Huly's own transactor loads as models/all/bundle/model.json.
-Its identifier namespace is Huly's: core:class:Doc, tracker:class:Issue,
-contact:class:Person, recruit:class:Vacancy, and the activity:, hr:, lead: and
-board: plugin classes.
-
-Commit dab16f69 renamed Huly-branded display strings inside this bundle. That
-scrub changed strings, not authorship or provenance; the file is Huly's work
-and is offered here under Huly's licence.
-
-No other file in this repository is derived from Huly Platform.
-
-Hanzo's own Go code in pkg/transactor/ implements Huly's wire protocol and
-therefore names Huly's identifiers as protocol constants (for example
-"core:class:Doc" in hierarchy.go, seed.go and txapply.go). Using an interface's
-names to interoperate with it is not a derivative of the model bundle; those
-files are Hanzo's own work under MIT OR Apache-2.0.
+This product is licensed MIT OR Apache-2.0, EXCEPT for the third-party
+dependencies listed below, which remain under their own licence. See LICENSE.
 
 ================================================================================
 Base / PocketBase — MIT
